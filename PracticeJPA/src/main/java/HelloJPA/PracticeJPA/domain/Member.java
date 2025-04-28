@@ -1,9 +1,9 @@
 package HelloJPA.PracticeJPA.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import HelloJPA.PracticeJPA.domain.enums.Gender;
+import HelloJPA.PracticeJPA.domain.enums.MemberStatus;
+import HelloJPA.PracticeJPA.domain.enums.SocialType;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -26,10 +26,21 @@ public class Member {
 
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
+
+    @Enumerated(EnumType.STRING)
+    private MemberStatus status;
+
     private LocalDate inactiveDate;
 
     private Integer point;
 
+    /*private LocalDate createDate;
 
-
+    private LocalDate updateDate;*/
+    
 }
