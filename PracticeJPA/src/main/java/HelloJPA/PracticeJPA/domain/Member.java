@@ -42,5 +42,5 @@ public class Member {
     /*private LocalDate createDate;
 
     private LocalDate updateDate;*/
-    
+
 }
