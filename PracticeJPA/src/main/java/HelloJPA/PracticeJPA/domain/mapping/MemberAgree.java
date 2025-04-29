@@ -1,30 +1,30 @@
-package HelloJPA.PracticeJPA.domain;
+package HelloJPA.PracticeJPA.domain.mapping;
 
+
+
+import HelloJPA.PracticeJPA.domain.Member;
+import HelloJPA.PracticeJPA.domain.Terms;
 import HelloJPA.PracticeJPA.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Builder
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Review extends BaseEntity {
+public class MemberAgree extends BaseEntity {
 
-    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Id  @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String body;
-
-    private Float score;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
-    private Store store;
-
+    @JoinColumn(name = "terms_id")
+    private Terms terms;
 
 }
