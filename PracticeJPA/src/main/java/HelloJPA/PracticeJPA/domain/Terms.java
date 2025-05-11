@@ -17,14 +17,19 @@ import java.util.List;
 public class Terms extends BaseEntity {
 
     @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
+    @Column(nullable = false, length = 50)
     private String title;
 
+    @Column(nullable = false, length = 255)
     private String text;
 
+    @Column(nullable = false)
     private boolean active;
 
+    @Builder.Default
     @OneToMany(mappedBy = "terms", cascade = CascadeType.ALL)
     private List<MemberAgree> memberAgreeList = new ArrayList<>();
 

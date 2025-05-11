@@ -16,10 +16,13 @@ import java.util.List;
 public class Region extends BaseEntity {
 
     @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
+    @Column(nullable = false, length = 20)
     private String name;
 
+    @Builder.Default
     @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
     private List<Store> regionStoreList = new ArrayList<>();
 }

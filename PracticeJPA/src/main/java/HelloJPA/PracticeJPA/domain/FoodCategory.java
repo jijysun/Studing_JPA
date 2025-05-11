@@ -1,10 +1,7 @@
 package HelloJPA.PracticeJPA.domain;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -15,8 +12,10 @@ import lombok.*;
 public class FoodCategory {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
+    @Column(nullable = false, length = 50)
     private String name;
 
 

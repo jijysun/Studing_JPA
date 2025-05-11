@@ -16,6 +16,7 @@ import lombok.*;
 public class MemberPrefer extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
     // 지연 로딩!

@@ -12,10 +12,13 @@ import lombok.*;
 public class Review extends BaseEntity {
 
     @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
+    @Column(nullable = false, length = 200)
     private String body;
 
+    @Column(nullable = false)
     private Float score;
 
     @ManyToOne(fetch = FetchType.LAZY)

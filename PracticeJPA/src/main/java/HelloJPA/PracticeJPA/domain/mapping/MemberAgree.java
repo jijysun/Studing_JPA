@@ -16,6 +16,7 @@ import lombok.*;
 public class MemberAgree extends BaseEntity {
 
     @Id  @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
 

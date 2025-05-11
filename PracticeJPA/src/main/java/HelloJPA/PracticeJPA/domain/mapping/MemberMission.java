@@ -18,6 +18,7 @@ import lombok.*;
 public class MemberMission extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
