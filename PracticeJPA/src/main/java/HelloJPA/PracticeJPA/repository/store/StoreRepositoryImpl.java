@@ -5,7 +5,7 @@ import HelloJPA.PracticeJPA.domain.Store;
 import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
 import HelloJPA.PracticeJPA.dto.MissionDto;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Projections;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static HelloJPA.PracticeJPA.domain.QMember.member;
-import static HelloJPA.PracticeJPA.domain.QMission.mission;
-import static HelloJPA.PracticeJPA.domain.mapping.QMemberMission.memberMission;
+
 
 @Repository
 //@RequiredArgsConstructor

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-@Service
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class StoreQueryServiceImpl implements StoreQueryService {
