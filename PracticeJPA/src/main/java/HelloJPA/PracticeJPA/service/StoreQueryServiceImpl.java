@@ -1,9 +1,9 @@
 package HelloJPA.PracticeJPA.service;
 
 import HelloJPA.PracticeJPA.domain.Store;
-import HelloJPA.PracticeJPA.repository.StoreRepository;
+import HelloJPA.PracticeJPA.repository.store.StoreRepository;
+import HelloJPA.PracticeJPA.repository.store.StoreRepositoryImpl;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +17,7 @@ import java.util.Optional;
 public class StoreQueryServiceImpl implements StoreQueryService {
 
     private final StoreRepository storeRepository;
+    private final StoreRepositoryImpl storeRepositoryImpl;
 
     @Override
     public Optional<Store> findStore(Long id) {

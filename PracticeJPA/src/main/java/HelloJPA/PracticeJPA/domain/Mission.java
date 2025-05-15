@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +21,11 @@ public class Mission extends BaseEntity {
     @Column(nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer reward;
 
-    @Column(nullable = false, columnDefinition = "DATETIME")
-    private LocalDate deadLine;
+    @Column(nullable = true, columnDefinition = "DATETIME")
+    private LocalDateTime deadLine;
 
     @Column(nullable = false)
     private String missionSpec;

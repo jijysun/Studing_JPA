@@ -54,6 +54,11 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 10)
     private Integer point;
 
+    @Column(nullable = false, length = 11)
+    private String phone;
+
+    private Boolean veritify;
+
 
     // QEntity 오류 , @Builder 관련
 
