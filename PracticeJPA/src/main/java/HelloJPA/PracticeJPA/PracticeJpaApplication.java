@@ -1,12 +1,8 @@
 package HelloJPA.PracticeJPA;
 
-import HelloJPA.PracticeJPA.service.StoreQueryService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
@@ -18,7 +14,7 @@ public class PracticeJpaApplication {
 		SpringApplication.run(PracticeJpaApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			StoreQueryService bean = ctx.getBean(StoreQueryService.class);
@@ -32,6 +28,6 @@ public class PracticeJpaApplication {
 			bean.findStoresByNameAndScore(name, score)
 					.forEach(System.out::println);
 		};
-	}
+	}*/
 
 }

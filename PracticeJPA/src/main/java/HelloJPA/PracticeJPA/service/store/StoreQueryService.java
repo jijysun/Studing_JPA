@@ -1,4 +1,4 @@
-package HelloJPA.PracticeJPA.service;
+package HelloJPA.PracticeJPA.service.store;
 
 import HelloJPA.PracticeJPA.domain.Store;
 

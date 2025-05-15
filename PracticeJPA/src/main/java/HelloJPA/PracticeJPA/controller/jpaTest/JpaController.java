@@ -1,4 +1,4 @@
-package HelloJPA.PracticeJPA.controller;
+package HelloJPA.PracticeJPA.controller.jpaTest;
 
 import HelloJPA.PracticeJPA.domain.Member;
 import HelloJPA.PracticeJPA.domain.Mission;
@@ -13,19 +13,15 @@ import HelloJPA.PracticeJPA.repository.member_mission.MemberMissionRepository;
 import HelloJPA.PracticeJPA.repository.mission.MissionRepository;
 import HelloJPA.PracticeJPA.repository.mission.MissionRepositoryImpl;
 import HelloJPA.PracticeJPA.repository.review.ReviewRepositoryImpl;
-import HelloJPA.PracticeJPA.service.StoreQueryServiceImpl;
+import HelloJPA.PracticeJPA.service.store.StoreQueryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
-@Controller
+
 @RequiredArgsConstructor
 @Slf4j
 public class JpaController {
