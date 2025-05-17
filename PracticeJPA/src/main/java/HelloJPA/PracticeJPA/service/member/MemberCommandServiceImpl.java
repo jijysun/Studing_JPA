@@ -12,6 +12,7 @@ import HelloJPA.PracticeJPA.repository.foodCategory.FoodCategoryRepository;
 import HelloJPA.PracticeJPA.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberCommandServiceImpl implements MemberCommandService {
 
     private final MemberRepository memberRepository;
@@ -28,18 +30,18 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Transactional
     public Member joinMember(MemberRequestDto.JoinDto request) {
 
-        Member member = MemberConverter.toMember(request);
+        log.info("joinMember");
 
+        Member newMember = MemberConverter.toMember(request);
         List<FoodCategory> foodCategoryList = request.getPreferCategory().stream()
                 .map(category -> {
-            return foodCategoryRepository.findById(category).orElseThrow(() -> new FoodCategoryHandler(ErrorStatus.FOOD_CATEGORY_NOT_FOUND));
-        }).collect(Collectors.toList());
+                    return foodCategoryRepository.findById(category).orElseThrow(() -> new FoodCategoryHandler(ErrorStatus.FOOD_CATEGORY_NOT_FOUND));
+                }).collect(Collectors.toList());
 
-        List<MemberPrefer> memberPreferList = MemberPreferConverter.toMemberPreferList(foodCategoryList);;
-        memberPreferList.forEach(prefer -> {
-            prefer.setMember(member);
-        });
+        List<MemberPrefer> memberPreferList = MemberPreferConverter.toMemberPreferList(foodCategoryList);
 
-        return memberRepository.save(member);
+        memberPreferList.forEach(memberPrefer -> {memberPrefer.setMember(newMember);});
+
+        return memberRepository.save(newMember);
     }
 }

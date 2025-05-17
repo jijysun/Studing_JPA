@@ -5,5 +5,5 @@ import HelloJPA.PracticeJPA.dto.MemberRequestDto;
 
 public interface MemberCommandService {
 
-    public Member joinMember (MemberRequestDto.JoinDto request);
+    Member joinMember (MemberRequestDto.JoinDto request);
 }
