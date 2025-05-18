@@ -21,10 +21,10 @@ public class Mission extends BaseEntity {
     @Column(nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Integer reward;
 
-    @Column(nullable = true, columnDefinition = "DATETIME")
+    @Column(nullable = false, columnDefinition = "DATETIME")
     private LocalDateTime deadLine;
 
     @Column(nullable = false)
