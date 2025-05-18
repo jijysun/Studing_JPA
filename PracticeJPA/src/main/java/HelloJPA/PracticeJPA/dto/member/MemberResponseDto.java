@@ -1,4 +1,4 @@
-package HelloJPA.PracticeJPA.dto;
+package HelloJPA.PracticeJPA.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +8,18 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 public class MemberResponseDto {
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddNewReviewResultDTO {
+        Long reviewId;
+        Long storeId;
+        LocalDateTime createdAt;
+    }
+
+
     @Builder
     @Getter
     @NoArgsConstructor
@@ -16,4 +28,6 @@ public class MemberResponseDto {
         Long memberId;
         LocalDateTime createdAt;
     }
+
+
 }

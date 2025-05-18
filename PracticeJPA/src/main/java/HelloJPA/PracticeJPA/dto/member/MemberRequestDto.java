@@ -1,11 +1,14 @@
-package HelloJPA.PracticeJPA.dto;
+package HelloJPA.PracticeJPA.dto.member;
 
 import HelloJPA.PracticeJPA.validation.annotation.ExistCategories;
+import HelloJPA.PracticeJPA.validation.annotation.ExistStores;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Singular;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -38,5 +41,25 @@ public class MemberRequestDto {
 
         @ExistCategories
         List<Long> preferCategory;
+    }
+
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddNewReviewRequestDto{
+
+        @NotNull
+        @ExistStores
+        private Long storeId;
+
+        @NotNull
+        private Float score;
+
+        @Size(min = 5, max = 255)
+        private String body;
+
+        private List<String> reviewPhoto;
     }
 }

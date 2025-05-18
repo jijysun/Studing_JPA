@@ -2,8 +2,8 @@ package HelloJPA.PracticeJPA.converter.member;
 
 import HelloJPA.PracticeJPA.domain.Member;
 import HelloJPA.PracticeJPA.domain.enums.Gender;
-import HelloJPA.PracticeJPA.dto.MemberRequestDto;
-import HelloJPA.PracticeJPA.dto.MemberResponseDto;
+import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
+import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

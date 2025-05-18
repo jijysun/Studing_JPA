@@ -2,18 +2,17 @@ package HelloJPA.PracticeJPA.controller.member;
 
 import HelloJPA.PracticeJPA.common.apiPayload.ApiResponse;
 import HelloJPA.PracticeJPA.common.apiPayload.code.status.SuccessStatus;
+import HelloJPA.PracticeJPA.converter.ReviewConverter;
 import HelloJPA.PracticeJPA.converter.member.MemberConverter;
 import HelloJPA.PracticeJPA.domain.Member;
-import HelloJPA.PracticeJPA.dto.MemberRequestDto;
-import HelloJPA.PracticeJPA.dto.MemberResponseDto;
+import HelloJPA.PracticeJPA.domain.Review;
+import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
+import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
 import HelloJPA.PracticeJPA.service.member.MemberCommandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,4 +30,11 @@ public class MemberController {
         return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(member), SuccessStatus._OK);
     }
 
+    @PostMapping("/{memberId}/reviews")
+    public ApiResponse<MemberResponseDto.AddNewReviewResultDTO> addReview
+            (@PathVariable Long memberId, @RequestBody @Valid MemberRequestDto.AddNewReviewRequestDto requestDto){
+        log.info("addReview");
+        Review review = memberCommandService.addReview(memberId, requestDto);
+        return ApiResponse.onSuccess(ReviewConverter.toAddReviewResultDto (review), SuccessStatus._OK);
+    }
 }
