@@ -1,5 +1,6 @@
 package HelloJPA.PracticeJPA.dto.member;
 
+import HelloJPA.PracticeJPA.validation.annotation.ChallengeMission;
 import HelloJPA.PracticeJPA.validation.annotation.ExistCategories;
 import HelloJPA.PracticeJPA.validation.annotation.ExistStores;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 public class MemberRequestDto {
+
 
     @Getter
     public static class JoinDto{
@@ -61,5 +63,16 @@ public class MemberRequestDto {
         private String body;
 
         private List<String> reviewPhoto;
+    }
+
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChallengeMissionRequestDto {
+
+        @ChallengeMission
+        private Long missionId;
     }
 }

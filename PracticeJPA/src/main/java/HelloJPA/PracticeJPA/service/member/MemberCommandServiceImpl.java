@@ -6,14 +6,15 @@ import HelloJPA.PracticeJPA.common.apiPayload.exception.handler.UserHandler;
 import HelloJPA.PracticeJPA.converter.MemberPreferConverter;
 import HelloJPA.PracticeJPA.converter.ReviewConverter;
 import HelloJPA.PracticeJPA.converter.member.MemberConverter;
-import HelloJPA.PracticeJPA.domain.FoodCategory;
-import HelloJPA.PracticeJPA.domain.Member;
-import HelloJPA.PracticeJPA.domain.Review;
-import HelloJPA.PracticeJPA.domain.Store;
+import HelloJPA.PracticeJPA.converter.memberMission.MemberMissionConverter;
+import HelloJPA.PracticeJPA.domain.*;
+import HelloJPA.PracticeJPA.domain.mapping.MemberMission;
 import HelloJPA.PracticeJPA.domain.mapping.MemberPrefer;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
 import HelloJPA.PracticeJPA.repository.foodCategory.FoodCategoryRepository;
 import HelloJPA.PracticeJPA.repository.member.MemberRepository;
+import HelloJPA.PracticeJPA.repository.member_mission.MemberMissionRepository;
+import HelloJPA.PracticeJPA.repository.mission.MissionRepository;
 import HelloJPA.PracticeJPA.repository.review.ReviewRepository;
 import HelloJPA.PracticeJPA.repository.store.StoreRepository;
 import jakarta.transaction.Transactional;
@@ -33,6 +34,21 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final FoodCategoryRepository foodCategoryRepository;
     private final StoreRepository  storeRepository;
     private final ReviewRepository reviewRepository;
+    private final MissionRepository missionRepository;
+    private final MemberMissionRepository memberMissionRepository;
+
+    @Override
+    @Transactional
+    public Mission challengeMission(Long MemberId, MemberRequestDto.ChallengeMissionRequestDto request) {
+
+        Member requestMember = memberRepository.findById(MemberId).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        Mission targetMission = missionRepository.findById(request.getMissionId()).orElseThrow(() -> new UserHandler(ErrorStatus.MISSION_NOT_FOUND));
+
+        MemberMission newChallengingMission = MemberMissionConverter.toMemberMission(requestMember, targetMission);
+        memberMissionRepository.save(newChallengingMission);
+
+        return targetMission;
+    }
 
     @Override
     @Transactional

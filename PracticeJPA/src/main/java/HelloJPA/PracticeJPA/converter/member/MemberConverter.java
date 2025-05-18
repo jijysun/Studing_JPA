@@ -1,7 +1,10 @@
 package HelloJPA.PracticeJPA.converter.member;
 
 import HelloJPA.PracticeJPA.domain.Member;
+import HelloJPA.PracticeJPA.domain.Mission;
 import HelloJPA.PracticeJPA.domain.enums.Gender;
+import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
+import HelloJPA.PracticeJPA.domain.mapping.MemberMission;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
 import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
 
@@ -40,4 +43,15 @@ public class MemberConverter {
                 .gender(gender)
                 .build();
     }
+
+    public static MemberResponseDto.ChallengeMissionResponseDto toChallengeMissionResponseDto(Mission mission){
+        return MemberResponseDto.ChallengeMissionResponseDto.builder()
+                .missionSpec(mission.getMissionSpec())
+                .reward(mission.getReward())
+                .missionStatus(MissionStatus.CHALLENGING)
+                .deadLine(mission.getDeadLine())
+                .build();
+    }
+
+
 }

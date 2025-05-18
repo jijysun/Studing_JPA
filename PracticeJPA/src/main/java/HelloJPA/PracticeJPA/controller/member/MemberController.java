@@ -5,6 +5,7 @@ import HelloJPA.PracticeJPA.common.apiPayload.code.status.SuccessStatus;
 import HelloJPA.PracticeJPA.converter.ReviewConverter;
 import HelloJPA.PracticeJPA.converter.member.MemberConverter;
 import HelloJPA.PracticeJPA.domain.Member;
+import HelloJPA.PracticeJPA.domain.Mission;
 import HelloJPA.PracticeJPA.domain.Review;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
 import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
@@ -19,6 +20,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/members")
 @Slf4j
 public class MemberController {
+
+    @PostMapping("/{memberId}/missions")
+    public ApiResponse<MemberResponseDto.ChallengeMissionResponseDto> challengeMission
+            (@PathVariable Long memberId, @RequestBody @Valid MemberRequestDto.ChallengeMissionRequestDto request){
+        log.info("challengeMission");
+        Mission mission = memberCommandService.challengeMission (memberId, request);
+
+        return ApiResponse.onSuccess(MemberConverter.toChallengeMissionResponseDto (mission), SuccessStatus._OK);
+    }
 
     private final MemberCommandService memberCommandService;
 
@@ -37,4 +47,7 @@ public class MemberController {
         Review review = memberCommandService.addReview(memberId, requestDto);
         return ApiResponse.onSuccess(ReviewConverter.toAddReviewResultDto (review), SuccessStatus._OK);
     }
+
+
+
 }
