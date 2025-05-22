@@ -1,11 +1,13 @@
 package HelloJPA.PracticeJPA.converter;
 
 import HelloJPA.PracticeJPA.domain.Region;
+import HelloJPA.PracticeJPA.domain.Review;
 import HelloJPA.PracticeJPA.domain.Store;
 import HelloJPA.PracticeJPA.dto.region.RegionRequestDto;
-import HelloJPA.PracticeJPA.dto.region.RegionResponseDto;
+import HelloJPA.PracticeJPA.dto.store.StoreResponseDto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StoreConverter {
 
@@ -18,4 +20,14 @@ public class StoreConverter {
                 .storeReviewList(new ArrayList<>())
                 .build();
     }
+
+    public static StoreResponseDto.ReviewPreviewDto toReviewPreviewDto (Review review) {
+        return null;
+    }
+
+    public static StoreResponseDto.ReviewPreviewListDto toReviewPreviewListDto (List<Review> reviewList) {
+        return null;
+    }
+
+
 }
