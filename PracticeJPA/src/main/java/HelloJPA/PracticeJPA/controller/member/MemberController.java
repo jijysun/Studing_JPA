@@ -9,6 +9,7 @@ import HelloJPA.PracticeJPA.domain.Mission;
 import HelloJPA.PracticeJPA.domain.Review;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
 import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
+import HelloJPA.PracticeJPA.dto.store.StoreResponseDto;
 import HelloJPA.PracticeJPA.service.member.MemberCommandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +50,8 @@ public class MemberController {
     }
 
 
+    @GetMapping("/{memberId}/reviews")
+    public ApiResponse<StoreResponseDto.ReviewPreViewListDTO> viewMyReviews (){
 
+    }
 }
