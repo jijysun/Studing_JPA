@@ -20,6 +20,8 @@ import HelloJPA.PracticeJPA.repository.store.StoreRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -81,5 +83,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         Review newReview = ReviewConverter.toReview(writeMember, targetStore, requestDto);
 
         return reviewRepository.save(newReview);
+    }
+
+    @Override
+    public Page<Review> getMyReviews(Long memberId, Integer page) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        return reviewRepository.findAllByMember(member, PageRequest.of(page-1, 10));
     }
 }

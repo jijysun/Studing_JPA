@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorStatus implements BaseErrorCode {
+
+    WRONG_PAGE (HttpStatus.BAD_REQUEST, "PAGE4001", "올바르지 않은 페이지 번호 입니다."),
+
     MISSION_NOT_FOUND (HttpStatus.BAD_REQUEST, "MISSION4000", "해당 미션이 존재하지 않습니다."),
     MISSION_ALREADY_CHALLENGED (HttpStatus.BAD_REQUEST, "MISSION4001", "이미 도전 중인 미션 입니다"),
 
@@ -29,6 +32,8 @@ public enum ErrorStatus implements BaseErrorCode {
     STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "STORE4000", "해당 가게가 존재하지 않습니다."),
 
     TEMP_EXCEPTION(HttpStatus.BAD_REQUEST, "TEMP4001", "테스트 예외가 발생했습니다."),
+
+
 
     // 추가 예시
     POST_ALREADY_UPDATED (HttpStatus.CONFLICT, "POST4001", "이미 수정된 글입니다."),

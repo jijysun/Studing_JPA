@@ -21,7 +21,7 @@ public class StoreResponseDto {
         private String missionSpec;
     }
 
-<<<<<<< HEAD
+
     @Builder
     @Getter
     @NoArgsConstructor
@@ -44,7 +44,7 @@ public class StoreResponseDto {
         Float score;
         String body;
         LocalDate createdAt;
-=======
+    }
 
     @Getter
     @Builder
@@ -67,6 +67,6 @@ public class StoreResponseDto {
         Float score;
         String body;
         LocalDate createAt;
->>>>>>> origin/feature/2
+
     }
 }
