@@ -21,6 +21,7 @@ public class StoreResponseDto {
         private String missionSpec;
     }
 
+<<<<<<< HEAD
     @Builder
     @Getter
     @NoArgsConstructor
@@ -43,5 +44,29 @@ public class StoreResponseDto {
         Float score;
         String body;
         LocalDate createdAt;
+=======
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReviewPreviewListDto {
+        List <ReviewPreviewListDto> reviewList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirstPage;
+        Boolean isLastPage;
+    }
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReviewPreviewDto {
+        String ownerNickname;
+        Float score;
+        String body;
+        LocalDate createAt;
+>>>>>>> origin/feature/2
     }
 }

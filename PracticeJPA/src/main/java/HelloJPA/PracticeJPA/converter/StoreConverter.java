@@ -4,6 +4,7 @@ import HelloJPA.PracticeJPA.domain.Region;
 import HelloJPA.PracticeJPA.domain.Review;
 import HelloJPA.PracticeJPA.domain.Store;
 import HelloJPA.PracticeJPA.dto.region.RegionRequestDto;
+<<<<<<< HEAD
 import HelloJPA.PracticeJPA.dto.region.RegionResponseDto;
 import HelloJPA.PracticeJPA.dto.store.StoreResponseDto;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,12 @@ import org.springframework.data.domain.Page;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+=======
+import HelloJPA.PracticeJPA.dto.store.StoreResponseDto;
+
+import java.util.ArrayList;
+import java.util.List;
+>>>>>>> origin/feature/2
 
 public class StoreConverter {
 
@@ -24,6 +31,7 @@ public class StoreConverter {
                 .build();
     }
 
+<<<<<<< HEAD
     public static StoreResponseDto.ReviewPreViewDTO reviewPreViewDTO(Review review){
         return StoreResponseDto.ReviewPreViewDTO.builder()
                 .ownerNickname(review.getMember().getName()) // Object Graph Search
@@ -44,4 +52,15 @@ public class StoreConverter {
                 .reviewList(dtoList)
                 .build();
     }
+=======
+    public static StoreResponseDto.ReviewPreviewDto toReviewPreviewDto (Review review) {
+        return null;
+    }
+
+    public static StoreResponseDto.ReviewPreviewListDto toReviewPreviewListDto (List<Review> reviewList) {
+        return null;
+    }
+
+
+>>>>>>> origin/feature/2
 }
