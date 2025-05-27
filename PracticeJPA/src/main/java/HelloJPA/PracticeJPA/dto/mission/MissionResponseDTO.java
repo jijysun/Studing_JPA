@@ -18,7 +18,6 @@ public class MissionResponseDTO {
          private String missionSpec;
          private Integer reward;
          private String deadLine;
-
     }
 
     @Getter
@@ -27,6 +26,33 @@ public class MissionResponseDTO {
     @AllArgsConstructor
     public static class StoreMissionListDTO {
         private List<StoreMissionDTO> storeMissionList;
+        private Integer listSize;
+        private Integer totalPage;
+        private Long totalElements;
+        private Boolean isFirst;
+        private Boolean isLast;
+    }
+
+
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChallengeMissionResponseDTO {
+        private Long missionId;
+        private String missionSpec;
+        private Integer reward;
+        private String deadLine;
+    }
+
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChallengingMissionResponseListDTO {
+        List<ChallengeMissionResponseDTO> challengeMissionList;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;

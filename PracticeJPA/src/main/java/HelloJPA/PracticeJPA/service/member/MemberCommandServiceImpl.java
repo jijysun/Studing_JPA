@@ -8,6 +8,7 @@ import HelloJPA.PracticeJPA.converter.ReviewConverter;
 import HelloJPA.PracticeJPA.converter.member.MemberConverter;
 import HelloJPA.PracticeJPA.converter.memberMission.MemberMissionConverter;
 import HelloJPA.PracticeJPA.domain.*;
+import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
 import HelloJPA.PracticeJPA.domain.mapping.MemberMission;
 import HelloJPA.PracticeJPA.domain.mapping.MemberPrefer;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
@@ -93,5 +94,20 @@ public class MemberCommandServiceImpl implements MemberCommandService {
             throw new UserHandler(ErrorStatus.WRONG_PAGE);
         }
         return allByMember;
+    }
+
+    @Override
+    public Page<Mission> getChallengingMissions(Long memberId, MissionStatus status, Integer page) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        // 조회된 미션 ID에 대해 미션 조회\
+        // select * from mission where id = (select mission_id from member_mission where member_id = ? and status = challenge) + paging
+        List<MemberMission> allByMemberAndStatus = memberMissionRepository.findAllByMemberAndStatus(member, status, PageRequest.of(page - 1, 10)).stream().toList();
+        Page<Mission> allByMemberMissionList = missionRepository.findAllByMemberMissionList(allByMemberAndStatus, PageRequest.of(page - 1, 10));
+
+        if (allByMemberAndStatus.isEmpty()){
+            throw new UserHandler(ErrorStatus.NO_CHALLENGING_MISSIONS);
+        }
+
+        return allByMemberMissionList;
     }
 }

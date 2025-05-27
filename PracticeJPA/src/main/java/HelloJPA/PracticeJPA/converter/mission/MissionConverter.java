@@ -2,8 +2,10 @@ package HelloJPA.PracticeJPA.converter.mission;
 
 import HelloJPA.PracticeJPA.domain.Mission;
 import HelloJPA.PracticeJPA.domain.Store;
+import HelloJPA.PracticeJPA.dto.mission.MissionResponseDTO;
 import HelloJPA.PracticeJPA.dto.store.StoreRequestDto;
 import HelloJPA.PracticeJPA.dto.store.StoreResponseDto;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +24,21 @@ public class MissionConverter {
                 .reward(mission.getReward())
                 .deadLine(mission.getDeadLine())
                 .missionSpec(mission.getMissionSpec())
+                .build();
+    }
+
+    public static MissionResponseDTO.ChallengeMissionResponseDTO toChallengeMissionResponseDTO (Mission mission) {
+        return MissionResponseDTO.ChallengeMissionResponseDTO.builder()
+                .missionId(mission.getId())
+                .deadLine(mission.getDeadLine().toString())
+                .missionSpec(mission.getMissionSpec())
+                .reward(mission.getReward())
+                .build();
+    }
+
+    public static MissionResponseDTO.ChallengingMissionResponseListDTO challengingMissionResponseListDTO (Page<Mission>){
+        return MissionResponseDTO.ChallengingMissionResponseListDTO.builder()
+                .
                 .build();
     }
 }

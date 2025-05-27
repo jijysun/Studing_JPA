@@ -4,11 +4,15 @@ import HelloJPA.PracticeJPA.common.apiPayload.ApiResponse;
 import HelloJPA.PracticeJPA.common.apiPayload.code.status.SuccessStatus;
 import HelloJPA.PracticeJPA.converter.ReviewConverter;
 import HelloJPA.PracticeJPA.converter.member.MemberConverter;
+import HelloJPA.PracticeJPA.converter.mission.MissionConverter;
 import HelloJPA.PracticeJPA.domain.Member;
 import HelloJPA.PracticeJPA.domain.Mission;
 import HelloJPA.PracticeJPA.domain.Review;
+import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
+import HelloJPA.PracticeJPA.domain.mapping.MemberMission;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
 import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
+import HelloJPA.PracticeJPA.dto.mission.MissionResponseDTO;
 import HelloJPA.PracticeJPA.dto.review.ReviewResponseDto;
 import HelloJPA.PracticeJPA.service.member.MemberCommandService;
 import HelloJPA.PracticeJPA.validation.annotation.ValidPage;
@@ -75,6 +79,13 @@ public class MemberController {
     public ApiResponse<ReviewResponseDto.myReviewListDto> getMyReviews (@PathVariable Long memberId, @ValidPage @RequestParam(name = "page") Integer page){
         Page<Review> myReviews = memberCommandService.getMyReviews(memberId, page);
         return ApiResponse.onSuccess(ReviewConverter.toMyReviewListDto(myReviews), SuccessStatus._OK);
+    }
+
+    @GetMapping("/{memberId}/missions")
+    public ApiResponse<MissionResponseDTO.ChallengingMissionResponseListDTO> getChallengingMissions
+            (@PathVariable Long memberId, @RequestParam(name="status")MissionStatus status, @ValidPage @RequestParam (name = "page") Integer page ){
+        Page <Mission> challengingMissions = memberCommandService.getChallengingMissions (memberId,status ,page);
+        return ApiResponse.onSuccess(MissionConverter.toChallengingMissionListDTO(challengingMissions), SuccessStatus._OK);
     }
 
 }
