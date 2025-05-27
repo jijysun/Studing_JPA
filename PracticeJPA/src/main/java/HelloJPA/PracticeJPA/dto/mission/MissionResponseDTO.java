@@ -33,8 +33,6 @@ public class MissionResponseDTO {
         private Boolean isLast;
     }
 
-
-
     @Getter
     @Builder
     @NoArgsConstructor
@@ -45,7 +43,6 @@ public class MissionResponseDTO {
         private Integer reward;
         private String deadLine;
     }
-
 
     @Getter
     @Builder
@@ -58,5 +55,16 @@ public class MissionResponseDTO {
         private Long totalElements;
         private Boolean isFirst;
         private Boolean isLast;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CompleteChallengedMissionResponseDTO {
+        private Integer completedMemberMissionCount;
+        private Long missionId;
+        private String missionSpec;
+        private Integer reward;
     }
 }

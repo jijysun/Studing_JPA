@@ -8,6 +8,7 @@ import HelloJPA.PracticeJPA.dto.store.StoreResponseDto;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class MissionConverter {
     public static Mission toMission (Store targetStore, StoreRequestDto.AddNewMissionDto request) {
@@ -36,9 +37,26 @@ public class MissionConverter {
                 .build();
     }
 
-    public static MissionResponseDTO.ChallengingMissionResponseListDTO challengingMissionResponseListDTO (Page<Mission>){
+    public static MissionResponseDTO.ChallengingMissionResponseListDTO toChallengingMissionResponseListDTO (Page<Mission> missions){
+
+        List<MissionResponseDTO.ChallengeMissionResponseDTO> dtoList = missions.stream().map(MissionConverter::toChallengeMissionResponseDTO).toList();
+
         return MissionResponseDTO.ChallengingMissionResponseListDTO.builder()
-                .
+                .challengeMissionList(dtoList)
+                .isFirst(missions.isFirst())
+                .isLast(missions.isLast())
+                .totalPage(missions.getTotalPages())
+                .totalElements(missions.getTotalElements())
+                .listSize(dtoList.size())
+                .build();
+    }
+
+    public static MissionResponseDTO.CompleteChallengedMissionResponseDTO toCompleteChallengedMissionResponseDTO (Integer count, Mission mission) {
+        return MissionResponseDTO.CompleteChallengedMissionResponseDTO.builder()
+                .completedMemberMissionCount(count)
+                .missionId(mission.getId())
+                .missionSpec(mission.getMissionSpec())
+                .reward(mission.getReward())
                 .build();
     }
 }

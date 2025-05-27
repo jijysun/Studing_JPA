@@ -9,6 +9,8 @@ import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
@@ -29,7 +31,11 @@ public class MemberMission extends BaseEntity {
     @JoinColumn(name = "mission_id")
     private Mission mission;
 
-
     @Enumerated(EnumType.STRING)
     private MissionStatus status;
+
+    public void completeMission (){
+        this.status = MissionStatus.COMPLETED;
+    }
+
 }

@@ -13,10 +13,9 @@ import java.util.Optional;
 @Repository
 public interface MemberMissionRepository extends JpaRepository<MemberMission, Long> {
 
-    Optional<MemberMission> findByMissionId(Long missionId);
 
 
-    Page<MemberMission> findAllByMember(Member member, Pageable pageable);
+    Integer countMemberMissionByMemberAndStatus(Member member, MissionStatus missionStatus);
 
     Page<MemberMission> findAllByMemberAndStatus(Member member, MissionStatus status, Pageable pageable);
 }

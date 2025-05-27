@@ -3,8 +3,8 @@ package HelloJPA.PracticeJPA.service.member;
 import HelloJPA.PracticeJPA.domain.Member;
 import HelloJPA.PracticeJPA.domain.Mission;
 import HelloJPA.PracticeJPA.domain.Review;
-import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
+import HelloJPA.PracticeJPA.dto.mission.MissionResponseDTO;
 import org.springframework.data.domain.Page;
 
 public interface MemberCommandService {
@@ -17,5 +17,7 @@ public interface MemberCommandService {
 
     Page<Review> getMyReviews (Long memberId, Integer page);
 
-    Page<Mission> getChallengingMissions (Long memberId, MissionStatus status,  Integer page);
+    Page<Mission> getChallengingMissions (Long memberId,   Integer page);
+
+    MissionResponseDTO.CompleteChallengedMissionResponseDTO completeMission(Long memberId, Long memberMissionId );
 }

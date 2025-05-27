@@ -8,8 +8,6 @@ import HelloJPA.PracticeJPA.converter.mission.MissionConverter;
 import HelloJPA.PracticeJPA.domain.Member;
 import HelloJPA.PracticeJPA.domain.Mission;
 import HelloJPA.PracticeJPA.domain.Review;
-import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
-import HelloJPA.PracticeJPA.domain.mapping.MemberMission;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
 import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
 import HelloJPA.PracticeJPA.dto.mission.MissionResponseDTO;
@@ -81,11 +79,41 @@ public class MemberController {
         return ApiResponse.onSuccess(ReviewConverter.toMyReviewListDto(myReviews), SuccessStatus._OK);
     }
 
-    @GetMapping("/{memberId}/missions")
+    @GetMapping("/{memberId}/missions/challenging")
+    @Operation(summary = "사용자가 진행 중인 미션 목록 조회 API", description = "사용자가 진행 중인 미션 목록 조회 API 이며, 페이징을 포함합니다. query String 으로 page 번호를 주시기 바랍니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 조회에 성공했습니다", content = @Content(schema = @Schema(implementation = ReviewResponseDto.myReviewListDto.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "사용자가 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PAGE4001", description = "올바르지 않은 페이지 번호 입니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰이 필요해요!", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰이 만료되었어요!", content = @Content(schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @Parameters({
+            @Parameter(name = "memberId", description = "사용자 id, pathVariable 입니다!"),
+            @Parameter(name = "page", description = "page 번호, 1부터 시작하는 값 입니다.", in = ParameterIn.QUERY, schema = @Schema(defaultValue = "1"))
+    })
     public ApiResponse<MissionResponseDTO.ChallengingMissionResponseListDTO> getChallengingMissions
-            (@PathVariable Long memberId, @RequestParam(name="status")MissionStatus status, @ValidPage @RequestParam (name = "page") Integer page ){
-        Page <Mission> challengingMissions = memberCommandService.getChallengingMissions (memberId,status ,page);
-        return ApiResponse.onSuccess(MissionConverter.toChallengingMissionListDTO(challengingMissions), SuccessStatus._OK);
+            (@PathVariable Long memberId, @ValidPage @RequestParam (name = "page") Integer page ){
+        Page <Mission> challengingMissions = memberCommandService.getChallengingMissions (memberId, page);
+        return ApiResponse.onSuccess(MissionConverter.toChallengingMissionResponseListDTO(challengingMissions), SuccessStatus._OK);
     }
+
+    @PostMapping("/{memberId}/missions/{memberMissionId}/complete")
+    @Operation(summary = "진행 중인 미션 진행 완료 요청 API", description = "사용자가 진행 중인 미션을 진행 완료로 바꾸는 API 이며, 페이징을 포함합니다. query String 으로 page 번호를 주시기 바랍니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 조회에 성공했습니다", content = @Content(schema = @Schema(implementation = ReviewResponseDto.myReviewListDto.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "사용자가 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MISSION4002", description = "도전 중인 미션이 없습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰이 필요해요!", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰이 만료되었어요!", content = @Content(schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @Parameters({
+            @Parameter(name = "memberId", description = "사용자 id, pathVariable 입니다!"),
+    })
+    public ApiResponse<MissionResponseDTO.CompleteChallengedMissionResponseDTO> completeChallengedMission (@PathVariable Long memberId, @PathVariable Long memberMissionId){
+        MissionResponseDTO.CompleteChallengedMissionResponseDTO dto = memberCommandService.completeMission(memberId, memberMissionId);
+        return ApiResponse.onSuccess(dto, SuccessStatus._OK);
+    }
+
 
 }

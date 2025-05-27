@@ -30,7 +30,7 @@ public class MissionChallengeValidator implements ConstraintValidator<ChallengeM
     public boolean isValid(Long missionId, ConstraintValidatorContext context) {
 
         Optional<Mission> mission = missionRepository.findById(missionId);
-        Optional<MemberMission> memberMission = memberMissionRepository.findByMissionId(missionId);
+        Optional<MemberMission> memberMission = memberMissionRepository.findById(missionId);
 
         if (mission.isEmpty()) {
             context.disableDefaultConstraintViolation();

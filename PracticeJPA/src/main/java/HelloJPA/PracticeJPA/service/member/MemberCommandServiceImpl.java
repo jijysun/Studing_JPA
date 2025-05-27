@@ -7,11 +7,13 @@ import HelloJPA.PracticeJPA.converter.MemberPreferConverter;
 import HelloJPA.PracticeJPA.converter.ReviewConverter;
 import HelloJPA.PracticeJPA.converter.member.MemberConverter;
 import HelloJPA.PracticeJPA.converter.memberMission.MemberMissionConverter;
+import HelloJPA.PracticeJPA.converter.mission.MissionConverter;
 import HelloJPA.PracticeJPA.domain.*;
 import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
 import HelloJPA.PracticeJPA.domain.mapping.MemberMission;
 import HelloJPA.PracticeJPA.domain.mapping.MemberPrefer;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
+import HelloJPA.PracticeJPA.dto.mission.MissionResponseDTO;
 import HelloJPA.PracticeJPA.repository.foodCategory.FoodCategoryRepository;
 import HelloJPA.PracticeJPA.repository.member.MemberRepository;
 import HelloJPA.PracticeJPA.repository.member_mission.MemberMissionRepository;
@@ -22,6 +24,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -97,17 +100,50 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public Page<Mission> getChallengingMissions(Long memberId, MissionStatus status, Integer page) {
+    public Page<Mission> getChallengingMissions(Long memberId, Integer page) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
-        // 조회된 미션 ID에 대해 미션 조회\
-        // select * from mission where id = (select mission_id from member_mission where member_id = ? and status = challenge) + paging
-        List<MemberMission> allByMemberAndStatus = memberMissionRepository.findAllByMemberAndStatus(member, status, PageRequest.of(page - 1, 10)).stream().toList();
-        Page<Mission> allByMemberMissionList = missionRepository.findAllByMemberMissionList(allByMemberAndStatus, PageRequest.of(page - 1, 10));
+
+        PageRequest pageable = PageRequest.of(page - 1, 10); // 해당 변수는 페이징 시 단 한 번만!!!
+
+        Page<MemberMission> allByMemberAndStatus = memberMissionRepository.findAllByMemberAndStatus(member, MissionStatus.CHALLENGING, pageable);
 
         if (allByMemberAndStatus.isEmpty()){
-            throw new UserHandler(ErrorStatus.NO_CHALLENGING_MISSIONS);
+            throw new UserHandler(ErrorStatus.WRONG_PAGE);
         }
 
-        return allByMemberMissionList;
+        // Id 먼저 추출
+        List<Long> missionIds = allByMemberAndStatus.stream().map(memberMission -> memberMission.getMission().getId()).collect(Collectors.toList());
+
+        List<Mission> allById = missionRepository.findAllById(missionIds);
+
+        // 찾은 여러 Mission  페이징
+        return new PageImpl<>(allById, pageable,allByMemberAndStatus.getTotalElements() );
     }
+
+    @Override
+    @Transactional
+    public MissionResponseDTO.CompleteChallengedMissionResponseDTO completeMission(Long memberId, Long memberMissionId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        Mission mission = missionRepository.findById(memberMissionId).orElseThrow(() -> new UserHandler(ErrorStatus.MISSION_NOT_FOUND));
+
+        // ver1
+        MemberMission memberMission = memberMissionRepository.findById(memberMissionId).orElseThrow(() -> new UserHandler(ErrorStatus.MISSION_NOT_FOUND));
+        memberMission.completeMission();
+
+        // ver2
+        MemberMission newMemberMission = MemberMission.builder()
+                .member(member)
+                .mission(mission)
+                .status(MissionStatus.COMPLETED)
+                .build();
+        memberMissionRepository.save(newMemberMission);
+
+        Integer completedMission = memberMissionRepository.countMemberMissionByMemberAndStatus(member, MissionStatus.COMPLETED);
+
+        return MissionConverter.toCompleteChallengedMissionResponseDTO(completedMission, mission);
+    }
+
+
+
 }
