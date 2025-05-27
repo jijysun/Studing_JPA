@@ -88,6 +88,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     public Page<Review> getMyReviews(Long memberId, Integer page) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
-        return reviewRepository.findAllByMember(member, PageRequest.of(page-1, 10));
+        Page<Review> allByMember = reviewRepository.findAllByMember(member, PageRequest.of(page - 1, 5));
+        if (allByMember.isEmpty()){
+            throw new UserHandler(ErrorStatus.WRONG_PAGE);
+        }
+        return allByMember;
     }
 }

@@ -10,13 +10,12 @@ import HelloJPA.PracticeJPA.domain.Review;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
 import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
 import HelloJPA.PracticeJPA.dto.review.ReviewResponseDto;
-import HelloJPA.PracticeJPA.dto.store.StoreResponseDto;
 import HelloJPA.PracticeJPA.service.member.MemberCommandService;
-import HelloJPA.PracticeJPA.validation.annotation.ExistStores;
-import HelloJPA.PracticeJPA.validation.annotation.ValidNumber;
+import HelloJPA.PracticeJPA.validation.annotation.ValidPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -62,14 +61,15 @@ public class MemberController {
     @GetMapping("/{memberId}/reviews")
     @Operation(summary = "사용자가 작성한 리뷰 목록 조회 API", description = "사용자가 작성한 리뷰 목록 조회 API 이며, 페이징을 포함합니다. query String 으로 page 번호를 주시기 바랍니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공!"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 조회에 성공했습니다", content = @Content(schema = @Schema(implementation = ReviewResponseDto.myReviewListDto.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰이 필요해요!", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰이 만료되었어요!", content = @Content(schema = @Schema(implementation = ApiResponse.class)))
     })
     @Parameters({
-            @Parameter(name = "memberId", description = "사용자 id, pathVariable 입니다!")
+            @Parameter(name = "memberId", description = "사용자 id, pathVariable 입니다!"),
+            @Parameter(name = "page", description = "page 번호, 1부터 시작하는 값 입니다.", in = ParameterIn.QUERY, schema = @Schema(defaultValue = "1"))
     })
-    public ApiResponse<ReviewResponseDto.myReviewListDto> getMyReviews (@PathVariable Long memberId, @ValidNumber @RequestParam(name = "page") Integer page){
+    public ApiResponse<ReviewResponseDto.myReviewListDto> getMyReviews (@PathVariable Long memberId, @ValidPage @RequestParam(name = "page") Integer page){
         Page<Review> myReviews = memberCommandService.getMyReviews(memberId, page);
         return ApiResponse.onSuccess(ReviewConverter.toMyReviewListDto(myReviews), SuccessStatus._OK);
     }

@@ -43,8 +43,6 @@ public class StoreController {
         return ApiResponse.onSuccess(MissionConverter.toAddNewMissionResultDto(newMission), SuccessStatus._OK);
     }
 
-
-
     @GetMapping("/{storeId}/reviews")
     @Operation(summary = "특정 가게의 리뷰 목록 조회 API", description = "특정 가게의 리뷰들의 목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호를 주세요")
     @ApiResponses({
@@ -60,4 +58,6 @@ public class StoreController {
         Page<Review> reviewList = storeQueryService.getReviewList(storeId, page);
         return ApiResponse.onSuccess(ReviewConverter.toMyReviewListDto(reviewList),  SuccessStatus._OK);
     }
+
+
 }
