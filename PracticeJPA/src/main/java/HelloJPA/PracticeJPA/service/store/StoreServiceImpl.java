@@ -10,6 +10,9 @@ import HelloJPA.PracticeJPA.repository.mission.MissionRepository;
 import HelloJPA.PracticeJPA.repository.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,5 +31,15 @@ public class StoreServiceImpl implements StoreService {
         Mission mission = MissionConverter.toMission (targetStore,request);
 
         return missionRepository.save(mission);
+    }
+
+    @Override
+    public Page<Mission> getMissionList(Long storeId, Integer page) {
+        Store store = storeRepository.findById(storeId).orElseThrow(() -> new StoreHandler(ErrorStatus.STORE_NOT_FOUND));
+        Page<Mission> allByStore = missionRepository.findAllByStore(store, PageRequest.of(page - 1, 10));
+        if (allByStore.isEmpty()) {
+            throw new StoreHandler(ErrorStatus.MISSION_NOT_FOUND);
+        }
+        return allByStore;
     }
 }

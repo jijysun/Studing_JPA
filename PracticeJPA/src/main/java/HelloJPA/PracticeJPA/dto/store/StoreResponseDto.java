@@ -22,8 +22,9 @@ public class StoreResponseDto {
     }
 
 
-    @Builder
+
     @Getter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ReviewPreViewListDTO {
@@ -35,8 +36,8 @@ public class StoreResponseDto {
         Boolean isLast;
     }
 
-    @Builder
     @Getter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ReviewPreViewDTO {
@@ -58,6 +59,7 @@ public class StoreResponseDto {
         Boolean isFirstPage;
         Boolean isLastPage;
     }
+
     @Getter
     @Builder
     @NoArgsConstructor
@@ -67,6 +69,5 @@ public class StoreResponseDto {
         Float score;
         String body;
         LocalDate createAt;
-
     }
 }
