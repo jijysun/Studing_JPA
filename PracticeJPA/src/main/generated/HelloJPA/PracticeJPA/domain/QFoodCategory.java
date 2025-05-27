@@ -19,9 +19,17 @@ public class QFoodCategory extends EntityPathBase<FoodCategory> {
 
     public static final QFoodCategory foodCategory = new QFoodCategory("foodCategory");
 
+    public final HelloJPA.PracticeJPA.domain.common.QBaseEntity _super = new HelloJPA.PracticeJPA.domain.common.QBaseEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath name = createString("name");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QFoodCategory(String variable) {
         super(FoodCategory.class, forVariable(variable));

@@ -5,14 +5,13 @@ import HelloJPA.PracticeJPA.domain.QMission;
 import HelloJPA.PracticeJPA.domain.QRegion;
 import HelloJPA.PracticeJPA.domain.QStore;
 import HelloJPA.PracticeJPA.dto.HomeDto;
-import HelloJPA.PracticeJPA.dto.MemberDto;
+import HelloJPA.PracticeJPA.dto.member.MemberDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Repository

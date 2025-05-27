@@ -1,4 +1,4 @@
-package HelloJPA.PracticeJPA.dto;
+package HelloJPA.PracticeJPA.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

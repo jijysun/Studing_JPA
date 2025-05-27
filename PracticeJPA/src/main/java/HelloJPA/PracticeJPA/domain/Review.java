@@ -4,6 +4,9 @@ import HelloJPA.PracticeJPA.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Builder
 @Getter
@@ -28,6 +31,10 @@ public class Review extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
+
+    @Column(columnDefinition = "TEXT")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    public List<ReviewImage> reviewImageList = new ArrayList<>();
 
 
 }
