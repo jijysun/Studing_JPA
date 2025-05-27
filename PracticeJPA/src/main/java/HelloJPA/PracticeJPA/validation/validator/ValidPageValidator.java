@@ -1,13 +1,13 @@
 package HelloJPA.PracticeJPA.validation.validator;
 
 import HelloJPA.PracticeJPA.common.apiPayload.code.status.ErrorStatus;
-import HelloJPA.PracticeJPA.validation.annotation.ValidNumber;
+import HelloJPA.PracticeJPA.validation.annotation.ValidPage;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class ValidNumberValidator implements ConstraintValidator<ValidNumber, Integer> {
+public class ValidPageValidator implements ConstraintValidator<ValidPage, Integer> {
     @Override
-    public void initialize(ValidNumber constraintAnnotation) {
+    public void initialize(ValidPage constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 

@@ -4,19 +4,22 @@ import HelloJPA.PracticeJPA.common.apiPayload.ApiResponse;
 import HelloJPA.PracticeJPA.common.apiPayload.code.status.SuccessStatus;
 import HelloJPA.PracticeJPA.converter.ReviewConverter;
 import HelloJPA.PracticeJPA.converter.member.MemberConverter;
+import HelloJPA.PracticeJPA.converter.mission.MissionConverter;
 import HelloJPA.PracticeJPA.domain.Member;
 import HelloJPA.PracticeJPA.domain.Mission;
 import HelloJPA.PracticeJPA.domain.Review;
+import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
+import HelloJPA.PracticeJPA.domain.mapping.MemberMission;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
 import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
+import HelloJPA.PracticeJPA.dto.mission.MissionResponseDTO;
 import HelloJPA.PracticeJPA.dto.review.ReviewResponseDto;
-import HelloJPA.PracticeJPA.dto.store.StoreResponseDto;
 import HelloJPA.PracticeJPA.service.member.MemberCommandService;
-import HelloJPA.PracticeJPA.validation.annotation.ExistStores;
-import HelloJPA.PracticeJPA.validation.annotation.ValidNumber;
+import HelloJPA.PracticeJPA.validation.annotation.ValidPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -62,16 +65,27 @@ public class MemberController {
     @GetMapping("/{memberId}/reviews")
     @Operation(summary = "사용자가 작성한 리뷰 목록 조회 API", description = "사용자가 작성한 리뷰 목록 조회 API 이며, 페이징을 포함합니다. query String 으로 page 번호를 주시기 바랍니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공!"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 조회에 성공했습니다", content = @Content(schema = @Schema(implementation = ReviewResponseDto.myReviewListDto.class))),
+            // 커스텀 응답 에러로 수정하기.
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "사용자가 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PAGE4001", description = "올바르지 않은 페이지 번호 입니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰이 필요해요!", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰이 만료되었어요!", content = @Content(schema = @Schema(implementation = ApiResponse.class)))
     })
     @Parameters({
-            @Parameter(name = "memberId", description = "사용자 id, pathVariable 입니다!")
+            @Parameter(name = "memberId", description = "사용자 id, pathVariable 입니다!"),
+            @Parameter(name = "page", description = "page 번호, 1부터 시작하는 값 입니다.", in = ParameterIn.QUERY, schema = @Schema(defaultValue = "1"))
     })
-    public ApiResponse<ReviewResponseDto.myReviewListDto> getMyReviews (@PathVariable Long memberId, @ValidNumber @RequestParam(name = "page") Integer page){
+    public ApiResponse<ReviewResponseDto.myReviewListDto> getMyReviews (@PathVariable Long memberId, @ValidPage @RequestParam(name = "page") Integer page){
         Page<Review> myReviews = memberCommandService.getMyReviews(memberId, page);
         return ApiResponse.onSuccess(ReviewConverter.toMyReviewListDto(myReviews), SuccessStatus._OK);
+    }
+
+    @GetMapping("/{memberId}/missions")
+    public ApiResponse<MissionResponseDTO.ChallengingMissionResponseListDTO> getChallengingMissions
+            (@PathVariable Long memberId, @RequestParam(name="status")MissionStatus status, @ValidPage @RequestParam (name = "page") Integer page ){
+        Page <Mission> challengingMissions = memberCommandService.getChallengingMissions (memberId,status ,page);
+        return ApiResponse.onSuccess(MissionConverter.toChallengingMissionListDTO(challengingMissions), SuccessStatus._OK);
     }
 
 }

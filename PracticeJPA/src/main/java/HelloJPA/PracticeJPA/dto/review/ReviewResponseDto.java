@@ -25,11 +25,11 @@ public class ReviewResponseDto {
     @AllArgsConstructor
     public static class myReviewListDto {
         private List<myReviewDto> reviewList;
-        Integer listSize;
-        Integer totalPage;
-        Long totalElements;
-        Boolean isFirst;
-        Boolean isLast;
+        private Integer listSize;
+        private Integer totalPage;
+        private Long totalElements;
+        private Boolean isFirst;
+        private Boolean isLast;
     }
 
 }

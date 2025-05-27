@@ -71,7 +71,6 @@ public class MemberRequestDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ChallengeMissionRequestDto {
-
         @ChallengeMission
         private Long missionId;
     }
