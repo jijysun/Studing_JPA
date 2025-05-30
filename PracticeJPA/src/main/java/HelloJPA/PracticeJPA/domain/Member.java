@@ -3,6 +3,7 @@ package HelloJPA.PracticeJPA.domain;
 import HelloJPA.PracticeJPA.domain.common.BaseEntity;
 import HelloJPA.PracticeJPA.domain.enums.Gender;
 import HelloJPA.PracticeJPA.domain.enums.MemberStatus;
+import HelloJPA.PracticeJPA.domain.enums.Role;
 import HelloJPA.PracticeJPA.domain.enums.SocialType;
 import HelloJPA.PracticeJPA.domain.mapping.MemberAgree;
 import HelloJPA.PracticeJPA.domain.mapping.MemberMission;
@@ -53,8 +54,11 @@ public class Member extends BaseEntity {
 //    @Column(nullable = true, columnDefinition = "DATETIME")
     private LocalDate inactiveDate;
 
-//    @Column(nullable = true, length = 50)
+    @Column(nullable = false, length = 50)
     private String email;
+
+    @Column(nullable = false, length = 50)
+    private String password;
 
     @ColumnDefault("0")
     private Integer point;
@@ -64,8 +68,9 @@ public class Member extends BaseEntity {
 
     private Boolean veritify;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    // QEntity 오류 , @Builder 관련
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)

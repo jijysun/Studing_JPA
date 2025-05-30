@@ -35,6 +35,8 @@ public class MemberController {
 
     private final MemberCommandService memberCommandService;
 
+    @PostMapping()
+
     @PostMapping("/{memberId}/missions")
     public ApiResponse<MemberResponseDto.ChallengeMissionResponseDto> challengeMission
             (@PathVariable Long memberId, @RequestBody @Valid MemberRequestDto.ChallengeMissionRequestDto request){

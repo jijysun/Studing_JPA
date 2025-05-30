@@ -14,11 +14,12 @@ public class MemberViewController {
         return "login";
     }
 
-    @GetMapping("/signup")
+    // -> MemberController로 이동
+    /*@GetMapping("/signup")
     public String signupPage(Model model) {
         model.addAttribute("memberJoinDTO", new MemberRequestDto.JoinDto());
         return "signup";
-    }
+    }*/
 
     @GetMapping("/home")
     public String home (){

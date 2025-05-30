@@ -1,8 +1,10 @@
 package HelloJPA.PracticeJPA.dto.member;
 
+import HelloJPA.PracticeJPA.domain.enums.Role;
 import HelloJPA.PracticeJPA.validation.annotation.ChallengeMission;
 import HelloJPA.PracticeJPA.validation.annotation.ExistCategories;
 import HelloJPA.PracticeJPA.validation.annotation.ExistStores;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,6 +20,17 @@ public class MemberRequestDto {
 
     @Getter
     public static class JoinDto{
+
+        // RequestDTO 에는 private 키워드를 사용하지 않는 이유는?
+
+        @Email
+        String email;
+
+        @NotBlank
+        String password;
+
+        @NotNull
+        Role role;
 
         @NotBlank
         String name;
@@ -38,7 +51,6 @@ public class MemberRequestDto {
         String address;
 
         @Size(min = 5, max = 12)
-
         String specAddress;
 
         @ExistCategories
