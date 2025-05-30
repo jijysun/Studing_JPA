@@ -7,10 +7,12 @@ import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
 import HelloJPA.PracticeJPA.domain.mapping.MemberMission;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
 import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+@Slf4j
 public class MemberConverter {
 
     public static MemberResponseDto.JoinResultDTO toJoinResultDTO(Member member){
@@ -34,6 +36,8 @@ public class MemberConverter {
                 gender = Gender.NONE;
                 break;
         }
+
+        log.info(request.toString());
 
         return Member.builder()
                 .email(request.getEmail())

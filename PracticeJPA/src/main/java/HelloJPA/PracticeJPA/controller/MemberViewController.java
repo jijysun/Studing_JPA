@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class MemberViewController {
 
-    @PostMapping ("login")
+    @GetMapping ("login")
     public String loginPage() {
         return "login";
     }
 
     // -> MemberController로 이동
-    /*@GetMapping("/signup")
+    @GetMapping("/signup")
     public String signupPage(Model model) {
-        model.addAttribute("memberJoinDTO", new MemberRequestDto.JoinDto());
+        model.addAttribute("memberJoinDto", new MemberRequestDto.JoinDto());
         return "signup";
-    }*/
+    }
 
     @GetMapping("/home")
     public String home (){

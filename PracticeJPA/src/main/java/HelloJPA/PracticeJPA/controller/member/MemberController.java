@@ -25,9 +25,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/members")
 @Slf4j
@@ -35,7 +38,22 @@ public class MemberController {
 
     private final MemberCommandService memberCommandService;
 
-    @PostMapping()
+    @PostMapping("/signup")
+    public String joinMember (@ModelAttribute("memberJoinDto") MemberRequestDto.JoinDto joinDto, BindingResult bindingResult, Model model){
+
+        if (bindingResult.hasErrors()) return "signup";
+
+        try{
+            log.info(joinDto.toString());
+            memberCommandService.joinMember(joinDto);
+            return "redirect:/login";
+        }
+        catch (Exception e){
+            model.addAttribute("error", e.getMessage());
+            return "signup";
+        }
+    }
+
 
     @PostMapping("/{memberId}/missions")
     public ApiResponse<MemberResponseDto.ChallengeMissionResponseDto> challengeMission

@@ -51,19 +51,19 @@ public class Member extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
     private MemberStatus status;
 
-//    @Column(nullable = true, columnDefinition = "DATETIME")
+    @Column( columnDefinition = "DATETIME")
     private LocalDate inactiveDate;
 
     @Column(nullable = false, length = 50)
     private String email;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String password;
 
     @ColumnDefault("0")
     private Integer point;
 
-//    @Column(nullable = false, length = 11)
+    @Column(nullable = false, length = 11)
     private String phone;
 
     private Boolean veritify;
@@ -88,10 +88,8 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<MemberMission> memberMissionList = new ArrayList<>();
 
-
-
-    /*private LocalDate createDate;
-
-    private LocalDate updateDate;*/
+    public void encodePassword(String password) {
+        this.password = password;
+    }
 
 }

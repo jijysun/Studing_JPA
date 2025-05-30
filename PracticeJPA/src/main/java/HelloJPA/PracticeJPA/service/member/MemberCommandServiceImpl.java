@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,6 +43,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final ReviewRepository reviewRepository;
     private final MissionRepository missionRepository;
     private final MemberMissionRepository memberMissionRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -62,17 +65,29 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         log.info("joinMember");
 
-        Member newMember = MemberConverter.toMember(request);
-        List<FoodCategory> foodCategoryList = request.getPreferCategory().stream()
-                .map(category -> {
-                    return foodCategoryRepository.findById(category).orElseThrow(() -> new FoodCategoryHandler(ErrorStatus.FOOD_CATEGORY_NOT_FOUND));
-                }).collect(Collectors.toList());
+        try{
+            Member newMember = MemberConverter.toMember(request);
 
-        List<MemberPrefer> memberPreferList = MemberPreferConverter.toMemberPreferList(foodCategoryList);
+            log.info(newMember.toString());
 
-        memberPreferList.forEach(memberPrefer -> {memberPrefer.setMember(newMember);});
+            newMember.encodePassword(passwordEncoder.encode(newMember.getPassword()));
 
-        return memberRepository.save(newMember);
+            List<FoodCategory> foodCategoryList = request.getPreferCategory().stream()
+                    .map(category ->
+                    {return foodCategoryRepository.findById(category)
+                            .orElseThrow(() -> new FoodCategoryHandler(ErrorStatus.FOOD_CATEGORY_NOT_FOUND));
+                    }).collect(Collectors.toList());
+
+            List<MemberPrefer> memberPreferList = MemberPreferConverter.toMemberPreferList(foodCategoryList);
+
+            memberPreferList.forEach(memberPrefer -> {memberPrefer.setMember(newMember);});
+
+            return memberRepository.save(newMember);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     @Override
