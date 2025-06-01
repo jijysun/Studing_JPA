@@ -87,7 +87,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
             e.printStackTrace();
             return null;
         }
-
     }
 
     @Override

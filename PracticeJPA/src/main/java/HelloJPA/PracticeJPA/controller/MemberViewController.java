@@ -14,7 +14,6 @@ public class MemberViewController {
         return "login";
     }
 
-    // -> MemberController로 이동
     @GetMapping("/signup")
     public String signupPage(Model model) {
         model.addAttribute("memberJoinDto", new MemberRequestDto.JoinDto());
