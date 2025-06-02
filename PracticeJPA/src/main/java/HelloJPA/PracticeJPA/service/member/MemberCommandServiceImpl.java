@@ -22,7 +22,7 @@ import HelloJPA.PracticeJPA.repository.member_mission.MemberMissionRepository;
 import HelloJPA.PracticeJPA.repository.mission.MissionRepository;
 import HelloJPA.PracticeJPA.repository.review.ReviewRepository;
 import HelloJPA.PracticeJPA.repository.store.StoreRepository;
-import jakarta.transaction.Transactional;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -32,6 +32,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -176,6 +177,16 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         String accessToken = jwtTokenProvider.generateToken(authentication);
         return MemberConverter.toLoginResultDTO(member, accessToken);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MemberResponseDto.MemberInfoDTO getMemberInfo(HttpServletRequest request) {
+
+        Authentication authentication = jwtTokenProvider.extractAuthentication(request);
+
+        Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        return MemberConverter.toMemberInfoDTO(member);
     }
 
 

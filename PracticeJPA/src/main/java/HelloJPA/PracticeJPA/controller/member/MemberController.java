@@ -21,16 +21,19 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.net.http.HttpRequest;
+
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
 @Slf4j
@@ -43,6 +46,13 @@ public class MemberController {
     public ApiResponse<MemberResponseDto.LoginResultDTO> login(@RequestBody @Valid MemberRequestDto.LoginRequestDTO request) {
         return ApiResponse.onSuccess(memberCommandService.loginMember(request), SuccessStatus._OK);
     }
+
+    @GetMapping("/info")
+    @Operation(summary = "유저 내 정보 조회 API - 인증 필요", description = "유저가 내 정보를 조회하는 API입니다.", security = { @SecurityRequirement(name = "JWT TOKEN")})
+    public ApiResponse<MemberResponseDto.MemberInfoDTO> getMyInfo (HttpServletRequest request){
+        return ApiResponse.onSuccess(memberCommandService.getMemberInfo(request), SuccessStatus._OK);
+    }
+
 
     @PostMapping("/signup")
     public String joinMember (@ModelAttribute("memberJoinDto") MemberRequestDto.JoinDto joinDto, BindingResult bindingResult, Model model){

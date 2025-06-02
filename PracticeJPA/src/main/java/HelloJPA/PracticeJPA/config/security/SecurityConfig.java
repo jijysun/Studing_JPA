@@ -4,6 +4,7 @@ import HelloJPA.PracticeJPA.config.properties.JwtProperties;
 import HelloJPA.PracticeJPA.config.security.jwt.JwtAuthenticationFilter;
 import HelloJPA.PracticeJPA.config.security.jwt.JwtTokenProvider;
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,10 +17,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtTokenProvider jwtTokenProvider) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -37,7 +41,6 @@ public class SecurityConfig {
                         .permitAll())*/
                 .csrf(csrf -> csrf.disable()) // 버전 업그레이드로 인한 문법 수정
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-                ;
         return http.build();
     }
 

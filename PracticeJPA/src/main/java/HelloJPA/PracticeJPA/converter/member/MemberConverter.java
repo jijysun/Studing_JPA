@@ -66,4 +66,12 @@ public class MemberConverter {
                 .accessToken(accessToken)
                 .build();
     }
+
+    public static MemberResponseDto.MemberInfoDTO toMemberInfoDTO(Member member){
+        return MemberResponseDto.MemberInfoDTO.builder()
+                .email(member.getEmail())
+                .gender(String.valueOf(member.getGender()))
+                .name(member.getName())
+                .build();
+    }
 }

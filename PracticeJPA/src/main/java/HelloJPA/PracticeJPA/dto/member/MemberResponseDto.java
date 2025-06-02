@@ -50,4 +50,14 @@ public class MemberResponseDto {
         String accessToken;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberInfoDTO {
+        String name;
+        String email;
+        String gender;
+    }
+
 }
