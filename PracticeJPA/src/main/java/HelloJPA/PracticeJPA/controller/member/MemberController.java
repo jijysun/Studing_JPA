@@ -38,6 +38,12 @@ public class MemberController {
 
     private final MemberCommandService memberCommandService;
 
+    @PostMapping("/login")
+    @Operation(summary = "유저 로그인 API",description = "유저가 로그인하는 API입니다.")
+    public ApiResponse<MemberResponseDto.LoginResultDTO> login(@RequestBody @Valid MemberRequestDto.LoginRequestDTO request) {
+        return ApiResponse.onSuccess(memberCommandService.loginMember(request), SuccessStatus._OK);
+    }
+
     @PostMapping("/signup")
     public String joinMember (@ModelAttribute("memberJoinDto") MemberRequestDto.JoinDto joinDto, BindingResult bindingResult, Model model){
 

@@ -60,5 +60,10 @@ public class MemberConverter {
                 .build();
     }
 
-
+    public static MemberResponseDto.LoginResultDTO toLoginResultDTO(Member member, String accessToken){
+        return MemberResponseDto.LoginResultDTO.builder()
+                .memberId(member.getId())
+                .accessToken(accessToken)
+                .build();
+    }
 }

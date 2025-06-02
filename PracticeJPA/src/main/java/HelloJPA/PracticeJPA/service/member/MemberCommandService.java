@@ -4,6 +4,7 @@ import HelloJPA.PracticeJPA.domain.Member;
 import HelloJPA.PracticeJPA.domain.Mission;
 import HelloJPA.PracticeJPA.domain.Review;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
+import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
 import HelloJPA.PracticeJPA.dto.mission.MissionResponseDTO;
 import org.springframework.data.domain.Page;
 
@@ -20,4 +21,6 @@ public interface MemberCommandService {
     Page<Mission> getChallengingMissions (Long memberId,   Integer page);
 
     MissionResponseDTO.CompleteChallengedMissionResponseDTO completeMission(Long memberId, Long memberMissionId );
+
+    MemberResponseDto.LoginResultDTO loginMember(MemberRequestDto.LoginRequestDTO request);
 }

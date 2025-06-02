@@ -3,6 +3,7 @@ package HelloJPA.PracticeJPA.service.member;
 import HelloJPA.PracticeJPA.common.apiPayload.code.status.ErrorStatus;
 import HelloJPA.PracticeJPA.common.apiPayload.exception.handler.FoodCategoryHandler;
 import HelloJPA.PracticeJPA.common.apiPayload.exception.handler.UserHandler;
+import HelloJPA.PracticeJPA.config.security.jwt.JwtTokenProvider;
 import HelloJPA.PracticeJPA.converter.MemberPreferConverter;
 import HelloJPA.PracticeJPA.converter.ReviewConverter;
 import HelloJPA.PracticeJPA.converter.member.MemberConverter;
@@ -13,6 +14,7 @@ import HelloJPA.PracticeJPA.domain.enums.MissionStatus;
 import HelloJPA.PracticeJPA.domain.mapping.MemberMission;
 import HelloJPA.PracticeJPA.domain.mapping.MemberPrefer;
 import HelloJPA.PracticeJPA.dto.member.MemberRequestDto;
+import HelloJPA.PracticeJPA.dto.member.MemberResponseDto;
 import HelloJPA.PracticeJPA.dto.mission.MissionResponseDTO;
 import HelloJPA.PracticeJPA.repository.foodCategory.FoodCategoryRepository;
 import HelloJPA.PracticeJPA.repository.member.MemberRepository;
@@ -26,9 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +50,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberMissionRepository memberMissionRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     @Transactional
@@ -158,6 +165,18 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return MissionConverter.toCompleteChallengedMissionResponseDTO(completedMission, mission);
     }
 
+    @Override
+    public MemberResponseDto.LoginResultDTO loginMember(MemberRequestDto.LoginRequestDTO request) {
+
+        Member member = memberRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        if (!passwordEncoder.matches(request.getPassword(), member.getPassword())){
+            throw new UserHandler(ErrorStatus.MEMBER_NOT_FOUND);
+        }
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getEmail(), null, Collections.singleton(() -> member.getRole().name()));
+
+        String accessToken = jwtTokenProvider.generateToken(authentication);
+        return MemberConverter.toLoginResultDTO(member, accessToken);
+    }
 
 
 }
