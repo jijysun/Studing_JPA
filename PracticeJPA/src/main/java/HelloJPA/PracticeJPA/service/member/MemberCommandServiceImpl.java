@@ -166,7 +166,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return MissionConverter.toCompleteChallengedMissionResponseDTO(completedMission, mission);
     }
 
-    @Override
+    /*@Override
     public MemberResponseDto.LoginResultDTO loginMember(MemberRequestDto.LoginRequestDTO request) {
 
         Member member = memberRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
@@ -177,15 +177,34 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         String accessToken = jwtTokenProvider.generateToken(authentication);
         return MemberConverter.toLoginResultDTO(member, accessToken);
+    }*/
+    @Override
+    public MemberResponseDto.LoginResultDTO loginMember(MemberRequestDto.LoginRequestDTO request) {
+        Member member = memberRepository.findByEmail(request.getEmail())
+                .orElseThrow(()-> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        if(!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
+            throw new UserHandler(ErrorStatus.WRONG_INPUT);
+        }
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                member.getEmail(), null,
+                Collections.singleton(() -> member.getRole().name())
+        );
+
+        String accessToken = jwtTokenProvider.generateToken(authentication);
+
+        return MemberConverter.toLoginResultDTO(member, accessToken);
     }
 
     @Override
     @Transactional(readOnly = true)
     public MemberResponseDto.MemberInfoDTO getMemberInfo(HttpServletRequest request) {
-
         Authentication authentication = jwtTokenProvider.extractAuthentication(request);
+        String email = authentication.getName();
 
-        Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(()-> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
         return MemberConverter.toMemberInfoDTO(member);
     }
 

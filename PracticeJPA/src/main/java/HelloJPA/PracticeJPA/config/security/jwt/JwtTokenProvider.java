@@ -27,11 +27,11 @@ public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
 
-    private Key getSigningKey (){
+    private Key getSigningKey() {
         return Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes());
     }
 
-    public String generateToken (Authentication authentication){
+    public String generateToken(Authentication authentication) {
         String email = authentication.getName();
 
         return Jwts.builder()
@@ -43,7 +43,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public Boolean validateToken (String token){
+    public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())
@@ -51,13 +51,11 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            e.printStackTrace();
             return false;
         }
     }
 
-    public Authentication getAuthentication (String token){
-
+    public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
@@ -67,26 +65,23 @@ public class JwtTokenProvider {
         String email = claims.getSubject();
         String role = claims.get("role", String.class);
 
-        User userPrincipal = new User(email, "", Collections.singleton(() -> role));
-        return new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
+        User principal = new User(email, "", Collections.singleton(() -> role));
+        return new UsernamePasswordAuthenticationToken(principal, token, principal.getAuthorities());
     }
 
-    public static String resolveToken(HttpServletRequest request){
+    public static String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(Constants.AUTH_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(Constants.TOKEN_PREFIX) ) {
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(Constants.TOKEN_PREFIX)) {
             return bearerToken.substring(Constants.TOKEN_PREFIX.length());
         }
         return null;
     }
 
-    public Authentication extractAuthentication (HttpServletRequest request){
+    public Authentication extractAuthentication(HttpServletRequest request){
         String accessToken = resolveToken(request);
-
-        if (accessToken == null && validateToken(accessToken)){
+        if(accessToken == null || !validateToken(accessToken)) {
             throw new UserHandler(ErrorStatus.INVALID_TOKEN);
         }
-
         return getAuthentication(accessToken);
     }
-
 }

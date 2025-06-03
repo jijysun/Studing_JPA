@@ -47,6 +47,13 @@ public class MemberController {
         return ApiResponse.onSuccess(memberCommandService.loginMember(request), SuccessStatus._OK);
     }
 
+    @PostMapping("/join")
+    @Operation(summary = "유저 회원가입 API",description = "유저가 회원가입하는 API입니다.")
+    public ApiResponse<MemberResponseDto.JoinResultDTO> join(@RequestBody @Valid MemberRequestDto.JoinDto request){
+        Member member = memberCommandService.joinMember(request);
+        return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(member), SuccessStatus._OK);
+    }
+
     @GetMapping("/info")
     @Operation(summary = "유저 내 정보 조회 API - 인증 필요", description = "유저가 내 정보를 조회하는 API입니다.", security = { @SecurityRequirement(name = "JWT TOKEN")})
     public ApiResponse<MemberResponseDto.MemberInfoDTO> getMyInfo (HttpServletRequest request){
@@ -80,13 +87,13 @@ public class MemberController {
         return ApiResponse.onSuccess(MemberConverter.toChallengeMissionResponseDto (mission), SuccessStatus._OK);
     }
 
-    @PostMapping("/")
+    /*@PostMapping("/")
     public ApiResponse<MemberResponseDto.JoinResultDTO> join(@RequestBody @Valid MemberRequestDto.JoinDto request){
         log.info("join");
 
         Member member = memberCommandService.joinMember(request);
         return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(member), SuccessStatus._OK);
-    }
+    }*/
 
     @PostMapping("/{memberId}/reviews")
     public ApiResponse<MemberResponseDto.AddNewReviewResultDTO> addReview
